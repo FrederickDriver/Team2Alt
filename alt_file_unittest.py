@@ -5,7 +5,16 @@ from scipy import stats
 class TestStringMethods(unittest.TestCase):
 
     def test_shuffle_dir(self):
-        pass
+        s1, s2 = "string1" , "string2"
+        all1 = list(af.make_permutations(10,[0,1],[0,1]))
+        all0 = list(af.make_permutations(10,[0,1],[1,0]))
+        
+        alls1 = af.shuffle_dir([s1,s2], all0)
+        alls2 = af.shuffle_dir([s1,s2], all1)
+        testmsg = [ "\n\nTestMessage:\n -inputs: ([s1,s2], all0)\n-Expected output was a list of string1:\n-Output= {all1}",
+                    "\n\nTestMessage:\n -inputs: ([s1,s2], all1)\n-Expected output was a list of string2:\n-Output= {all0}"]
+        self.assertEqual(alls1, [s1]*10,testmsg[0] )
+        self.assertEqual(alls2, [s2]*10,testmsg[1] )        
     def test_make_permutations(self):
         all1 = list(af.make_permutations(10,[0,1],[0,1]))
         all0 = list(af.make_permutations(10,[0,1],[1,0]))

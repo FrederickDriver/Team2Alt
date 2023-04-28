@@ -1,6 +1,6 @@
 ########################IMPORTS STATEMENTS#######################
 import numpy as np
-import numpy.random as random
+import numpy.random 
 import shutil, random, os, cv2
 
 ######UTILITY FUNCTIONS: FILEWRITING:DIRECTORY STRUCTURE#########
@@ -11,14 +11,14 @@ import shutil, random, os, cv2
   # e.g. if paths is ["<path>/dir_train","<path>/dir_test"] and permutation is [0,1,0,1,1]
   #the resulting list would be ["<path>/dir_train","<path>/dir_test","<path>/dir_train","<path>/dir_test","<path>/dir_test"]
 def shuffle_dir(paths, permutation):
-    pass
+    return [paths[p] for p in permutation]
 
 #make_permutations(n,[values],[probability_distribution]):
   #takes in an integer n and a list of floats [values] that sum up to 1
   #returns a list of size n where each element is an index of probability_distribution, corresponding to a random selection weighted by the said distribution
   #example, if n is 100, probability_distribution is [0.8,0.2] about 80 percent of the elements in the output should be 0 and 20 percent should be 1
 def make_permutations(n,values, dist):
-    return random.choice(values,size = n, p = dist)
+    return np.random.choice(values, size = n, p = dist)
 
 #make_directories(path, train_name, test_name):
   #take in a path, and creates the yolo directory structure

@@ -40,9 +40,9 @@ class TestWriteMethods(unittest.TestCase):
         self.assertEqual(all0, [0]*10,testmsg[1] )
         self.assertTrue(p_value > 0.05,testmsg[2])
 
-    def test_make_dierctories(self):
+    def test_make_directories(self):
         
-        inputs = path, train_name, test_name = "./", "train_data", "test_data"
+        inputs = path, train_name, test_name = "./yolo_highway/", "train_data", "test_data"
         expected_out_paths = [path+"images/"+train_name,path+"images/"+test_name,path+"labels/"+train_name,path+"labels/"+test_name]
 
         out_paths = af.make_directories(path, train_name,test_name)

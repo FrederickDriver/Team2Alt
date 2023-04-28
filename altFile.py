@@ -32,7 +32,7 @@ def make_directories(path, train_name,test_name):
     label_train_dir = os.path.join(label_dir, train_name)
     label_test_dir = os.path.join(label_dir, test_name)
 
-    dirs = [image_dir, label_dir, image_train_dir, image_test_dir, \
+    dirs = [path, image_dir, label_dir, image_train_dir, image_test_dir, \
             label_train_dir, label_test_dir]
     
     for dir in dirs:
@@ -40,7 +40,7 @@ def make_directories(path, train_name,test_name):
             shutil.rmtree(dir)
         os.mkdir(dir)
 
-    return dirs[2:]
+    return dirs[3:]
 
 ##########UTILITY FUNCTIONS: FILEWRITING: im_list#############
 

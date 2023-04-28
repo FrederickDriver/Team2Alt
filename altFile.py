@@ -1,6 +1,7 @@
 ########################IMPORTS STATEMENTS#######################
 import numpy as np
 import numpy.random as random
+import shutil, random, os, cv2
 
 ######UTILITY FUNCTIONS: FILEWRITING:DIRECTORY STRUCTURE#########
 
@@ -21,17 +22,40 @@ def make_permutations(n,values, dist):
 
 #make_directories(path, train_name, test_name):
   #take in a path, and creates the yolo directory structure
-  #returns a list of paths [ images/train , images/test , labels/train , labels/test ]
+  #returns a list of paths [ im_list/train , im_list/test , labels/train , labels/test ]
 def make_directories(path, train_name,test_name):
-    pass
-##########UTILITY FUNCTIONS: FILEWRITING: IMAGES#############
+    image_dir = os.path.join(path, "im_list")
+    image_train_dir = os.path.join(image_dir, train_name)
+    image_test_dir = os.path.join(image_dir, test_name)
+
+    label_dir = os.path.join(path, "labels")
+    label_train_dir = os.path.join(label_dir, train_name)
+    label_test_dir = os.path.join(label_dir, test_name)
+
+    dirs = [image_dir, label_dir, image_train_dir, image_test_dir, \
+            label_train_dir, label_test_dir]
+    
+    for dir in dirs:
+        if os.path.exists(dir):
+            shutil.rmtree(dir)
+        os.mkdir(dir)
+
+    return dirs[2:]
+
+##########UTILITY FUNCTIONS: FILEWRITING: im_list#############
 
 #save_frames([image_list], [paths], prefix): 
   #takes in a list of numpy arrays, and a list of directories to put the frames, which must both be of the same length
   # and a prefix which should usually be <Datarow_ID>.png
   #saves the frames, returns the total number of frames if successful, returns -1 if failed.
 def save_frames(im_list, paths, prx): 
-    pass
+    if len(im_list) != len(paths):
+        return -1
+    for img, path in zip(im_list, paths):
+        res = cv2.imwrite(os.path.join(path, prx), img)
+        if not res:
+            return -1
+    return len(im_list)
 
 ##########UTILITY FUNCTIONS: FILEWRITING: TEXT#############
 #write_yolo_annotations([paths], [< Datarow_ID , yolo_label_string >])

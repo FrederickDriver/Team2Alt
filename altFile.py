@@ -51,8 +51,8 @@ def make_directories(path, train_name,test_name):
 def save_frames(im_list, paths, prx): 
     if len(im_list) != len(paths):
         return -1
-    for img, path in zip(im_list, paths):
-        res = cv2.imwrite(os.path.join(path, prx), img)
+    for img, path, frame in zip(im_list, paths, range(len(im_list))):
+        res = cv2.imwrite(os.path.join(path, prx+'_'+str(frame)+'.png'), img)
         if not res:
             return -1
     return len(im_list)

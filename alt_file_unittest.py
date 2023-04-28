@@ -1,10 +1,15 @@
 from ast import Try
 import unittest
 import altFile as af
+import numpy as np
 from scipy import stats
 import os, shutil, random
 #TO USE UNIT TESTS SIMPLY CALL
 #python -m unittest alt_file_unittest.py 
+#TO UNIT TEST ONLY 1 CLASS
+#python -m unittest alt_file_unittest.<NAME OF CLASS>
+#TO UNIT TEST ONLY 1 CLASS TEST CASE
+#python -m unittest alt_file_unittest.<NAME OF CLASS>.<TEST CASE FUNCTION>
 class TestWriteMethods(unittest.TestCase):
 
     def test_shuffle_dir(self):
@@ -53,6 +58,25 @@ class TestWriteMethods(unittest.TestCase):
         for p in expected_out_paths:
             self.assertTrue(os.path.isdir(p),"\n\nTestMessage:\n -inputs: %s\n-Expected output was for this directory to be created, but currently it does not exist"%(p))
         shutil.rmtree(path)
+
+    def test_save_frames(self):
+        n=100
+        id = prx = '295844578'
+        def f ():
+            arr = np.zeros((360,360))
+            arr[180:200,:]=1
+            return arr
+        im_list = [ f() ]*n
+
+        inputs = path, train_name, test_name = "./yolo_highway/", "train_data", "test_data"
+        out_paths = af.make_directories(*inputs)
+        image_dirs = out_paths[:2]
+        file_paths = af.make_permutations(n,image_dirs,[.5,.5])
+
+        self.assertIsNot(-1,af.save_frames(im_list, file_paths,prx),"save frames returned a negative 1 which means imwrite failed to save a frame")
+        for i in range(len(file_paths)):
+            filename = file_paths[i]+os.sep+prx+"_"+str(i)+".png"
+            self.assertTrue(os.path.isfile(filename),"\n\nTestMessage:\n -inputs: %s\n-Expected output was for this file to be created, but currently it does not exist"%(filename))
 
     def test_write_yolo_annotation(self):
         inputs = path, train_name, test_name = "./yolo_highway/", "train_data", "test_data"

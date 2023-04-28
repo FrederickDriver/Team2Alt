@@ -52,8 +52,9 @@ def save_frames(im_list, paths, prx):
   n = len(im_list)
   if n != len(paths):
     return -1
-  for img, path, frame in zip(im_list, paths, range(n)):
-    res = cv2.imwrite(os.path.join(path, prx+'_'+str(frame)+'.png'), img)
+  for img, dir_path, frame in zip(im_list, paths, range(n)):
+    full_path = os.path.join(dir_path, prx+'_'+str(frame)+'.png')
+    res = cv2.imwrite(full_path, img)
     if not res:
       return -1
   return n

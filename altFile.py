@@ -49,13 +49,14 @@ def make_directories(path, train_name,test_name):
   # and a prefix which should usually be <Datarow_ID>.png
   #saves the frames, returns the total number of frames if successful, returns -1 if failed.
 def save_frames(im_list, paths, prx): 
-    if len(im_list) != len(paths):
-        return -1
-    for img, path, frame in zip(im_list, paths, range(len(im_list))):
-        res = cv2.imwrite(os.path.join(path, prx+'_'+str(frame)+'.png'), img)
-        if not res:
-            return -1
-    return len(im_list)
+  n = len(im_list)
+  if n != len(paths):
+    return -1
+  for img, path, frame in zip(im_list, paths, range(n)):
+    res = cv2.imwrite(os.path.join(path, prx+'_'+str(frame)+'.png'), img)
+    if not res:
+      return -1
+  return n
 
 ##########UTILITY FUNCTIONS: FILEWRITING: TEXT#############
 #write_yolo_annotations([paths], [< Datarow_ID , yolo_label_string >])
@@ -64,6 +65,8 @@ def save_frames(im_list, paths, prx):
   #creates a text file in the directory of each "path" with the filename <Datarow_ID>_<i>.txt
   #and writes yolo_label_string into the contents
 def write_yolo_annotations(paths, id_label):
-    pass
+  for dir_p, (datarow_id, payload), i in zip(paths, id_label, range(id_label)):
+    with open(dir_p+os.sep+datarow_id+'_'+i+'.txt', 'w') as file:
+      file.write(payload)
 
 

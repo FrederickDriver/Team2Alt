@@ -2,7 +2,7 @@ from ast import Try
 import unittest
 import altFile as af
 from scipy import stats
-import os
+import os, shutil
 #TO USE UNIT TESTS SIMPLY CALL
 #python -m unittest alt_file_unittest.py 
 class TestWriteMethods(unittest.TestCase):
@@ -53,6 +53,8 @@ class TestWriteMethods(unittest.TestCase):
 
         for p in expected_out_paths:
             self.assertTrue(os.path.exists(p),"\n\nTestMessage:\n -inputs: %s-Expected output was for this directory to be created, but currently it does not exist"%(p))
+        shutil.rmtree(path)
 
+        
 if __name__ == '__main__':
     unittest.main()

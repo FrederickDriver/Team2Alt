@@ -22,9 +22,9 @@ def make_permutations(n,values, dist):
 
 #make_directories(path, train_name, test_name):
   #take in a path, and creates the yolo directory structure
-  #returns a list of paths [ im_list/train , im_list/test , labels/train , labels/test ]
+  #returns a list of paths [ images/train , images/test , labels/train , labels/test ]
 def make_directories(path, train_name,test_name):
-    image_dir = os.path.join(path, "im_list")
+    image_dir = os.path.join(path, "images")
     image_train_dir = os.path.join(image_dir, train_name)
     image_test_dir = os.path.join(image_dir, test_name)
 

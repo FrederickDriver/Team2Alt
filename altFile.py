@@ -18,7 +18,7 @@ def shuffle_dir(paths, permutation):
   #returns a list of size n where each element is an index of probability_distribution, corresponding to a random selection weighted by the said distribution
   #example, if n is 100, probability_distribution is [0.8,0.2] about 80 percent of the elements in the output should be 0 and 20 percent should be 1
 def make_permutations(n,values, dist):
-    return np.random.choice(values, size = n, p = dist)
+    return list(np.random.choice(values, size = n, p = dist))
 
 #make_directories(path, train_name, test_name):
   #take in a path, and creates the yolo directory structure
@@ -65,8 +65,8 @@ def save_frames(im_list, paths, prx):
   #creates a text file in the directory of each "path" with the filename <Datarow_ID>_<i>.txt
   #and writes yolo_label_string into the contents
 def write_yolo_annotations(paths, id_label):
-  for dir_p, (datarow_id, payload), i in zip(paths, id_label, range(id_label)):
-    with open(dir_p+os.sep+datarow_id+'_'+i+'.txt', 'w') as file:
+  for dir_p, (datarow_id, payload), i in zip(paths, id_label, range(len(id_label))):
+    with open(dir_p+os.sep+datarow_id+'_'+str(i)+'.txt', 'w') as file:
       file.write(payload)
 
 

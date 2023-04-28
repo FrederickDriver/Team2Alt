@@ -2,7 +2,7 @@ from ast import Try
 import unittest
 import altFile as af
 from scipy import stats
-import os, shutil
+import os, shutil, random
 #TO USE UNIT TESTS SIMPLY CALL
 #python -m unittest alt_file_unittest.py 
 class TestWriteMethods(unittest.TestCase):
@@ -41,7 +41,6 @@ class TestWriteMethods(unittest.TestCase):
         self.assertTrue(p_value > 0.05,testmsg[2])
 
     def test_make_directories(self):
-        
         inputs = path, train_name, test_name = "./yolo_highway/", "train_data", "test_data"
         expected_out_paths = [path+"images/"+train_name,path+"images/"+test_name,path+"labels/"+train_name,path+"labels/"+test_name]
 
@@ -52,9 +51,23 @@ class TestWriteMethods(unittest.TestCase):
         self.assertEquals(out_paths, expected_out_paths,testmsg)
 
         for p in expected_out_paths:
-            self.assertTrue(os.path.exists(p),"\n\nTestMessage:\n -inputs: %s-Expected output was for this directory to be created, but currently it does not exist"%(p))
+            self.assertTrue(os.path.isdir(p),"\n\nTestMessage:\n -inputs: %s\n-Expected output was for this directory to be created, but currently it does not exist"%(p))
         shutil.rmtree(path)
 
+    def test_write_yolo_annotation(self):
+        inputs = path, train_name, test_name = "./yolo_highway/", "train_data", "test_data"
+        out_paths = af.make_directories(path, train_name,test_name)
+        label_paths = out_paths[2:]   
+        num_label_entries= n = 10     
+        file_paths = af.make_permutations(n,label_paths,[.5,.5])
         
+        label = ['10 60 14 90 24']*n
+        id = ['295844578']*n
+
+        af.write_yolo_annotations(file_paths, list(zip(id,label)))
+        for i in range(len(file_paths)):
+            filename = file_paths[i]+os.sep+id[i]+"_"+str(i)+".txt"
+            self.assertTrue(os.path.isfile(filename),"\n\nTestMessage:\n -inputs: %s\n-Expected output was for this file to be created, but currently it does not exist"%(filename))
+
 if __name__ == '__main__':
     unittest.main()
